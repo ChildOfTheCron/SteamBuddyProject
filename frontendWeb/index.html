@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Do CORS test and see if get works now.</h2>
+
+<div id="test"></div>
+<script>
+function Get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+}
+
+function buildTable(jsonObj) {
+
+    var tr = '<table style="width":100%>';
+    tr = tr + '<tr>';
+    for (var key in jsonObj){
+
+	console.log("meh:" + key + " -> " + jsonObj[key]);
+	var finalList = key;
+        //var tr = '<table style="width":100%>';
+        //tr = tr + '<tr>';
+        for (var finalKey in finalList) {
+	    tr = tr + '<th>' + finalList[finalKey] + '</th>';
+            //tr = $('<tr/>');
+            //tr.append("<td>" + jsonObj[key] + "</td>");
+            //tr.append("<td>" + jsonObj[i].productname + "</td>");
+            //tr.append("<td>" + jsonObj[i].discount + "</td>");
+            //$('table').append(tr);
+        }
+    }
+    tr = tr + '</tr>';
+    tr = tr + '</table>';
+    tr = tr + '<br>';	
+    return tr;
+}
+
+function testContent(json){
+    var returnList;	
+    for (var key in json) {
+	    if (key == "data"){    
+        	if (json.hasOwnProperty(key)) {
+            		//console.log(key + " -> " + json[key]);
+			var subList = json[key];
+			returnList = json[key];
+			console.log("testContentRetArray:" + key + " -> " + json[key]);
+			for (var subkey in subList) {
+				//console.log(subkey + " -> " + subList[subkey]);
+				var thirdList = subList[subkey];
+				//returnList = subList[subkey];
+				//for (var thirdSub in thirdList){
+				//	console.log(thirdSub + " -> " + thirdList[thirdSub]);
+				//}
+			}
+        	}
+	    }
+    }
+    return returnList;
+}
+
+var json_obj = JSON.parse(Get("http://192.168.56.2/api/get50offsales"));
+//var testVar = BuildTable(JSON.parse(Get("http://192.168.56.2/api/get50offsales")));
+var testStuff = testContent(json_obj);
+
+for (var meh in testStuff){
+    console.log("meh:" + meh + " -> " + testStuff[meh]);
+}
+
+var endVar = buildTable(testStuff);
+console.log("endVar: " + endVar);
+document.getElementById("test").innerHTML = endVar;
+</script>
+
+</body>
+</html>
+

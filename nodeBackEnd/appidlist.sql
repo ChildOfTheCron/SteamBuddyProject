@@ -23,4 +23,5 @@ INSERT INTO appIdTable ( appId, productName, discount ) VALUES
 (702350, 'Expansion - Hearts of Iron IV: Waking the Tiger','33'), 
 (844810, 'Stellaris: Distant Stars Story Pack','20'), 
 (219990, 'Grim Dawn','75'), 
-(547502, 'Cities: Skylines - Mass Transit','50') 
+(547502, 'Cities: Skylines - Mass Transit','50'), 
+(642280, 'Grim Dawn - Ashes of Malmouth Expansion','25') 

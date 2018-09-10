@@ -42,6 +42,8 @@ sub cleanData
 	# Remove any potential dupes. Shouldn't really happen but I've had cases where it did for some weird reason
 	my @cleanData = uniq(@lines);
 
+	print "Why does printing this line fix my parser? $cleanData[-1]";
+
 	# Add weird cases we need to catch and clean in this loop
 	foreach my $line (@cleanData)
 	{
@@ -53,6 +55,9 @@ sub cleanData
 			print "Name: $line\n";
 		}
 	}
+
+	# Remove empty array elements
+	@cleanData = grep /\S/, @cleanData;
 
 	# Remove trailing comma from array.
 	print "Last element was: " . $cleanData[-1] . "\n";
@@ -120,17 +125,17 @@ sub scrapeDataToFile
 
 print "Making SQL file if it doesn't exist\n";
 
-#createSQLFile() unless -e "rawdata.sql";
+createSQLFile() unless -e "rawdata.sql";
 
 print "Done making SQL file if it didn't exist \n";
 
-#my $totalRuns = 1;
-#$| = 1;
-#for (my $i=1; $i <= $totalRuns; $i++) {
-#	print "Starting run ...\n";
-#	scrapeDataToFile($i);
-#	sleep(60);
-#	print "Finishing run ...\n";
-#}
+my $totalRuns = 1;
+$| = 1;
+for (my $i=1; $i <= $totalRuns; $i++) {
+	print "Starting run ...\n";
+	scrapeDataToFile($i);
+	sleep(60);
+	print "Finishing run ...\n";
+}
 
 cleanData();

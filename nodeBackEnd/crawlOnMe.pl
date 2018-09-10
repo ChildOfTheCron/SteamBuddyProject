@@ -28,6 +28,9 @@ sub uniq {
          return @storeArray;
 }
  
+# Lets clean up our data, it's better than trying to parse HTML for every case ever.
+# HTML parsing is inheritantly messy and if they do and change how it's formatted we have to redo a bunch of parsing
+# Just grab the data in some kinda format that make sense and clean here
 sub cleanData
 {
 	my $filename = 'rawdata.sql';
@@ -36,8 +39,21 @@ sub cleanData
 		chomp(my @lines = <$fh>);
 	close $fh;
  
+	# Remove any potential dupes. Shouldn't really happen but I've had cases where it did for some weird reason
 	my @cleanData = uniq(@lines);
- 
+
+	# Add weird cases we need to catch and clean in this loop
+	foreach my $line (@cleanData)
+	{
+		# Gets us the name of the title
+		if ($line =~ /\(\d+,\s*'(.*)',.*,/)
+		{
+			# Attempt to remove those weird curley quotes as they are pure evil to parse
+			$line =~ s/’//g;
+			print "Name: $line\n";
+		}
+	}
+
 	# Remove trailing comma from array.
 	print "Last element was: " . $cleanData[-1] . "\n";
 	$cleanData[-1] =~ s/(\)),/$1/;
@@ -104,17 +120,17 @@ sub scrapeDataToFile
 
 print "Making SQL file if it doesn't exist\n";
 
-createSQLFile() unless -e "rawdata.sql";
+#createSQLFile() unless -e "rawdata.sql";
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 1;
-$| = 1;
-for (my $i=1; $i <= $totalRuns; $i++) {
-	print "Starting run ...\n";
-	scrapeDataToFile($i);
-	sleep(60);
-	print "Finishing run ...\n";
-}
+#my $totalRuns = 1;
+#$| = 1;
+#for (my $i=1; $i <= $totalRuns; $i++) {
+#	print "Starting run ...\n";
+#	scrapeDataToFile($i);
+#	sleep(60);
+#	print "Finishing run ...\n";
+#}
 
 cleanData();

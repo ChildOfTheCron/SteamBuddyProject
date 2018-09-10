@@ -54,6 +54,12 @@ sub cleanData
 			$line =~ s/’//g;
 			print "Name: $line\n";
 		}
+		if ($line =~ /\(\d+,\s*'.*',('')\),/)
+		{
+			$line =~ s/$1/0/;
+			print "Game discount not parsed, setting empty discount to 0 for now.\n";
+			#Todo, figure out why I cant parse these cases, there is a discount.
+		}
 	}
 
 	# Remove empty array elements
@@ -129,7 +135,7 @@ createSQLFile() unless -e "rawdata.sql";
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 1;
+my $totalRuns = 20;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";

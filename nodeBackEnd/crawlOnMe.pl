@@ -54,6 +54,17 @@ sub cleanData
 			$line =~ s/’//g;
 			print "Name: $line\n";
 		}
+		# There's gotta be a better way to do this but im to sick to think of it.
+		# This is to remove any single qoutes we find in the name (more than once).
+		if ($line =~ /\(\d+,\s*'(.*)',.*,/)
+		{
+			my $tmp = $1;
+			$tmp =~ s/'//gm;
+			if ($line =~ /\(\d+,\s*'(.*)',.*,/)
+			{
+				$line =~ s/$1/$tmp/gm;
+			}
+		}
 	}
 
 	# Remove empty array elements
@@ -129,7 +140,7 @@ createSQLFile() unless -e "rawdata.sql";
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 1;
+my $totalRuns = 10;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";

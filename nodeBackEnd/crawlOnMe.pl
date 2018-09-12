@@ -54,6 +54,7 @@ sub cleanData
 			$line =~ s/’//g;
 			print "Name: $line\n";
 		}
+		
 		# There's gotta be a better way to do this but im to sick to think of it.
 		# This is to remove any single qoutes we find in the name (more than once).
 		if ($line =~ /\(\d+,\s*'(.*)',.*,/)
@@ -64,6 +65,13 @@ sub cleanData
 			{
 				$line =~ s/$1/$tmp/gm;
 			}
+		}
+		
+		if ($line =~ /\(\d+,\s*'.*',('')\),/)
+		{
+			$line =~ s/$1/0/;
+			print "Game discount not parsed, setting empty discount to 0 for now.\n";
+			#Todo, figure out why I cant parse these cases, there is a discount.
 		}
 	}
 

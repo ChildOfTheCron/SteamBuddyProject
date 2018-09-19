@@ -42,7 +42,7 @@ sub cleanData
 	# Remove any potential dupes. Shouldn't really happen but I've had cases where it did for some weird reason
 	my @cleanData = uniq(@lines);
 
-	print "Why does printing this line fix my parser? $cleanData[-1]";
+	print "Why does printing this line fix my parser? -> $cleanData[-1]";
 
 	# Add weird cases we need to catch and clean in this loop
 	foreach my $line (@cleanData)
@@ -129,7 +129,7 @@ sub scrapeDataToFile
 	if ($appsize != $prodsize)
 	{
 		print "AppArraySize: $appsize : ProductArraySize: $prodsize : DiscountArraySize $discsize \n";
-		die "Warning, arrays do not align for items on page $pageNum, aborting..."
+		return "Warning, arrays do not align for items on page $pageNum, skipping page...\n";
 	}
 
 	foreach my $val (0..(@appIDData-1))
@@ -148,7 +148,7 @@ createSQLFile() unless -e "rawdata.sql";
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 10;
+my $totalRuns = 1;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";

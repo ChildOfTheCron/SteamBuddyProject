@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use LWP::Simple qw(get);
 use utf8;
+use POSIX qw(strftime);
 binmode STDOUT, ':utf8';
 
 sub uniq {
@@ -33,7 +34,8 @@ sub uniq {
 # Just grab the data in some kinda format that make sense and clean here
 sub cleanData
 {
-	my $filename = 'rawdata.sql';
+	my ($filename) = @_;
+	#my $filename = 'rawdata.sql';
  
 	open(my $fh, '<:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
 		chomp(my @lines = <$fh>);
@@ -80,7 +82,8 @@ sub cleanData
 
 sub createSQLFile
 {
-	my $filename = 'rawdata.sql';
+	my ($filename) = @_;
+	#my $filename = 'rawdata.sql';
 	open(my $fh, '>:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
 		print $fh "INSERT INTO appIdTable ( appId, productName, discount ) VALUES\n";
 	close $fh;
@@ -88,7 +91,7 @@ sub createSQLFile
 
 sub scrapeDataToFile
 {
-	my ($pageNum) = @_;
+	my ($pageNum, $fileName) = @_;
 
 	my $url = 'https://store.steampowered.com/search/?os=win%2Cmac%2Clinux&specials=1&page='.$pageNum;
 	my $html = get $url or die "Unable to get HTML data, aborting incase Vavle is angry with us.";
@@ -122,26 +125,29 @@ sub scrapeDataToFile
 	foreach my $val (0..(@appIDData-1))
 	{
 
-		my $filename = 'rawdata.sql';
+		my $filename = $fileName;
 		open(my $fh, '>>:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
 			print $fh "($appIDData[$val], \'$productNameData[$val]\',\'$discountData[$val]\'), \n";
 		close $fh;
 	}
 }
 
+#my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
+my $dateToday = strftime "%d_%m_%Y", localtime;
+my $fileName = "rawdata_$dateToday.sql";
 print "Making SQL file if it doesn't exist\n";
 
-createSQLFile() unless -e "rawdata.sql";
+createSQLFile($fileName) unless -e $fileName;
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 20;
+my $totalRuns = 10;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";
-	scrapeDataToFile($i);
+	scrapeDataToFile($i, $fileName);
 	sleep(60);
 	print "Finishing run ...\n";
 }
 
-cleanData();
+cleanData($fileName);

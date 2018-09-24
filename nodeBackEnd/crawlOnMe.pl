@@ -145,6 +145,25 @@ sub scrapeDataToFile
 	}
 }
 
+sub getNumberOfSalePages
+{
+	my $url = 'https://store.steampowered.com/search/?os=win%2Cmac%2Clinux&specials=1&page=1';
+	my $html = get $url or die "Unable to get HTML data, aborting incase Vavle is angry with us.";
+ 
+	my @pageNumbers = $html =~ m/.*<a .*>(\d+)<\/a>/g;
+
+	my $lilCache = 0;
+	for my $val (@pageNumbers)
+	{
+		if ($val > $lilCache)
+		{
+			$lilCache = $val;
+		}
+	}
+	
+	return $lilCache;
+}
+
 #my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
 my $dateToday = strftime "%d_%m_%Y", localtime;
 my $fileName = "rawdata_$dateToday.sql";
@@ -154,7 +173,7 @@ createSQLFile($fileName) unless -e $fileName;
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = 1;
+my $totalRuns = getNumberOfSalePages;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";

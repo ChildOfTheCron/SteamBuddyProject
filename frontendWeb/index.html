@@ -35,20 +35,22 @@
 }
 
 #myTable tr.header, #myTable tr:hover {
-  background-color: #f1f1f1;
+  background-color: #e8d7f2;
 }
 </style>
 </head>
-<body onload="wrapperFunc();">
+<body background="skulls.png" onload="wrapperFunc();">
 
-<h1 align="center" style="font-family:arial">Lorem Ipsum</h1>
-<h2>Do CORS test and see if get works now.</h2>
+<h1 align="center" style="font-family:arial">Welcome to Steam Buddy!</h1>
+<h2 style="font-family:arial">Use the boxes below to search for sales data!</h2>
 
 <input type="text" id="myInputGame" onkeyup="filterByGame()" placeholder="Search for games.." title="Type in a name">
 <input type="text" id="myInputAPPID" onkeyup="filterByAPPID()" placeholder="Search by APPID.." title="Type in a name">
 <input type="text" id="myInputDiscount" onkeyup="filterByDiscount()" placeholder="Search for Discount.." title="Type in a name">
 
 <div id="test" align="center" style="font-family:arial"></div>
+
+<p style="font-family:arial"> This is just a BETA page. Copyright TinyFlameRob.co.uk. Don't webcrawl me bro! </p>
 
 <script>
 
@@ -147,7 +149,7 @@ function filterByDiscount() {
 }
 function wrapperFunc()
 {
-	var json_obj = JSON.parse(Get("http://192.168.56.2/api/getallsales"));
+	var json_obj = JSON.parse(Get("http://192.168.0.9/api/getallsales"));
 	var testStuff = testContent(json_obj);
 
 //for (var meh in testStuff){

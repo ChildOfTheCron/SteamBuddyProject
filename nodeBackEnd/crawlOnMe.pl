@@ -113,6 +113,9 @@ sub scrapeDataToFile
 	my @appIDData = $html =~ m/<a href="https:\/\/store\.steampowered\.com\/[A-z]{3}\/.*"  data-ds-.*="(\d+)"/g;
 	my @productNameData = $html =~ m/<div class="col search_name ellipsis">.*\n.*<span class="title">(.*)<\/span>/g;
 
+	my @originalPrice = $html =~ m/<strike>£(\d+\.\d+)<\/strike><\/span><br>£\d+.\d+/g;
+	my @discountedPrice = $html =~ m/<strike>£\d+\.\d+<\/strike><\/span><br>£(\d+.\d+)/g;
+
 	foreach my $name (@productNameData)
 	{
 		if ($name =~ /'/)
@@ -140,7 +143,7 @@ sub scrapeDataToFile
 
 		my $filename = $fileName;
 		open(my $fh, '>>:encoding(UTF-8)', $filename) or die "Could not open file '$filename' $!";
-			print $fh "($appIDData[$val], \'$productNameData[$val]\',\'$discountData[$val]\'), \n";
+			print $fh "($appIDData[$val], \'$productNameData[$val]\',\'$discountData[$val]\',\'$discountedPrice[$val]\',\'$originalPrice[$val]\'), \n";
 		close $fh;
 	}
 }
@@ -173,7 +176,7 @@ createSQLFile($fileName) unless -e $fileName;
 
 print "Done making SQL file if it didn't exist \n";
 
-my $totalRuns = getNumberOfSalePages;
+my $totalRuns = 1;#getNumberOfSalePages;
 $| = 1;
 for (my $i=1; $i <= $totalRuns; $i++) {
 	print "Starting run ...\n";

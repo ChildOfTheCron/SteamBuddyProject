@@ -11,7 +11,9 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 CREATE TABLE appIdTable (
 	appid 	int PRIMARY KEY,
 	productname 	varchar(250),
-	discount	int
+	discount	int,
+	origprice	float(4),
+	discprice	float(4)
 );
 CREATE GROUP restgroup;
 CREATE USER restbot WITH PASSWORD 'resty';

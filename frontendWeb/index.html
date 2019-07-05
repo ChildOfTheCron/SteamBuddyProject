@@ -54,44 +54,16 @@
 
 <script>
 
-function Get(yourUrl){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",yourUrl,false);
-    Httpreq.send(null);
-    return Httpreq.responseText;          
-}
-
-function buildTable(jsonObj) {
+function buildTable() {
     var tr = '<table id="myTable" style="width":100% border="1">';
     //tr = tr + '<tr>';
     tr = tr + '<th>' + 'AppID' + '</th>' + '<th>' + 'Title Name' + '</th>' + '<th>' +  'Discount %' + '</th>' + '<th>' + 'Sale Price' + '</th>' + '<th>' + 'Full Price' + '</th>';
-    for (var key in jsonObj){
-
-	tr = tr + '<tr>';    
-	console.log("meh:" + key + " -> " + jsonObj[key]);
-	var finalList = jsonObj[key];
-        for (var finalKey in finalList) {
-	    tr = tr + '<td>' + finalList[finalKey] + '</td>';
-        }
-        tr = tr + '</tr>';	
-    }
-    tr = tr + '</table>';
+    
+    tr = tr + '<tr>';
+    tr = tr + '<td>' + '524220' + '</td>' + '<td>' + 'NieR:Automata™' + '</td>' + '<td>' + '50' + '</td>';
+    tr = tr + '</tr>';
+    tr = tr + '</table>'
     return tr;
-}
-
-function testContent(json){
-    var returnList;	
-    for (var key in json) {
-	    if (key == "data"){    
-        	if (json.hasOwnProperty(key)) {
-            		//console.log(key + " -> " + json[key]);
-			var subList = json[key];
-			returnList = json[key];
-			console.log("testContentRetArray:" + key + " -> " + json[key]);
-        	}
-	    }
-    }
-    return returnList;
 }
 
 function filterByGame() {
@@ -147,20 +119,10 @@ function filterByDiscount() {
     }
   }
 }
+
 function wrapperFunc()
 {
-	var json_obj = JSON.parse(Get("http://192.168.0.9/api/getallsales"));
-	var testStuff = testContent(json_obj);
-
-//for (var meh in testStuff){
-//    console.log("meh:" + meh + " -> " + testStuff[meh]);
-//    var tmptest = testStuff[meh];
-//	for (var meh2 in tmptest){
-//		console.log("meh2:" + meh2 + " -> " + tmptest[meh2]);
-//	}
-//}
-
-	var endVar = buildTable(testStuff);
+	var endVar = buildTable();
 	console.log("endVar: " + endVar);
 	document.getElementById("test").innerHTML = endVar;
 }

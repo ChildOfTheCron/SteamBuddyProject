@@ -1,4 +1,4 @@
-table_content = "tr = tr + '<td>' + '7776' + '</td>' + '<td>' + 'NieR:Automata™' + '</td>' + '<td>' + '50' + '</td>'";
+table_content = "tr = tr + '<tr>' + '<td>' + '7776' + '</td>' + '<td>' + 'NieR:Automata™' + '</td>' + '<td>' + '50' + '</td>' + '</tr>'+ '<tr>' + '<td>' + '1234' + '</td>' + '<td>' + 'GameTitle' + '</td>' + '<td>' + '65' + '</td>' + '</tr>'";
 #template = """1st header line
 #second header line
 #There are {npeople:5.2f} people in {nrooms} rooms
@@ -74,9 +74,7 @@ function buildTable() {{
     //tr = tr + '<tr>';
     tr = tr + '<th>' + 'AppID' + '</th>' + '<th>' + 'Title Name' + '</th>' + '<th>' +  'Discount %' + '</th>' + '<th>' + 'Sale Price' + '</th>' + '<th>' + 'Full Price' + '</th>';
 
-    tr = tr + '<tr>';
     {table_content}
-    tr = tr + '</tr>';
     tr = tr + '</table>'
     return tr;
 }}

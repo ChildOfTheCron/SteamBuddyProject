@@ -1,4 +1,19 @@
-table_content = "tr = tr + '<tr>' + '<td>' + '7776' + '</td>' + '<td>' + 'NieR:Automata™' + '</td>' + '<td>' + '50' + '</td>' + '</tr>'+ '<tr>' + '<td>' + '1234' + '</td>' + '<td>' + 'GameTitle' + '</td>' + '<td>' + '65' + '</td>' + '</tr>'";
+import json
+
+table_content = "tr = tr + "
+
+with open('test.json') as json_file:  
+    data = json.load(json_file)
+    rowBlock = ""
+    for x in data:
+       rowBlock += '\'<tr>\'' + ' + ' + '\'<td>\'' + ' + ' + '\'' + x + '\'' + ' + ' + '\'</td>\'' + ' + ' + '\'<td>\'' + ' + ' + '\'' + data[x]['name'] + '\'' + ' + ' + '\'</td>\'' + ' + ' + '\'<td>\'' + ' + ' + '\'' + data[x]['discount'] + '\'' + ' + ' + '\'</td>\'' + ' + ' + '\'</tr>\'' + '+'
+       print(data[x]['name'])
+       print(data[x]['discount'])
+    rowBlock = rowBlock[:-1]
+    table_content += rowBlock + ';'
+
+#table_content = "tr = tr + '<tr>' + '<td>' + '7776' + '</td>' + '<td>' + 'NieR:Automata™' + '</td>' + '<td>' + '50' + '</td>' + '</tr>' + '<tr>' + '<td>' + '1234' + '</td>' + '<td>' + 'GameTitle' + '</td>' + '<td' + '65' + '</td>' + '</tr>'";
+
 #template = """1st header line
 #second header line
 #There are {npeople:5.2f} people in {nrooms} rooms
